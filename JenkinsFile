@@ -1,0 +1,16 @@
+pipeline{
+    agent any
+    stages{
+        stage("Verify Branch"){
+            steps{
+                echo "$GIT_BRANCH"
+            }
+        }
+
+        stage("Docker Setup"){
+            steps{
+                sh "docker compose build"
+            }
+        }
+    }
+}
