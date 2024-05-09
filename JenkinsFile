@@ -7,10 +7,38 @@ pipeline{
             }
         }
 
-        stage("Docker Setup"){
+        stage("Docker Build"){
             steps{
                 sh "docker compose build"
             }
+        }
+
+        stage("Docker Start"){
+            steps{
+                sh "docker compose up -d"
+            }
+        }
+
+        stage("Unit Test"){
+            steps{
+                sh "pytest ./tests/testSample.py"
+            }
+
+            post{
+                success{
+                    echo "Test Are Passed"
+                }
+
+                failure{
+                    echo "Test Are Failed"
+                }
+            }
+        }
+    }
+
+    post{
+        always{
+            sh "docker compose down"
         }
     }
 }
